@@ -1,0 +1,10 @@
+name = Prijava Ispita
+description = "Modul za razmenu poruka izmedju proizvoljnih grupa korisnika"
+core = "7.x"
+core = "7.x"
+package = Prijava Ispita
+config = admin/config/prijava_ispita
+files[]= prijava.module
+files[]= prijava.install
+files[] = prijava.js
+files[] = prijava.css

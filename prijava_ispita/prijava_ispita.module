@@ -1,0 +1,147 @@
+<?php
+/**
+*
+*/
+/**
+ * Implementacija hook_permission().
+ */
+function prijava_ispita_permission(){
+    return array(
+        'submit prijava_ispita' => array(
+            'title' => t('Submit prijava_ispita'),
+            'description' => t('Submit prijava_ispita form'),
+        ),
+        'access prijava_ispita_submissions' => array(
+            'title' => t('Pristup prijavama'),
+            'description' => t('Pristup prijavljenim predmetima'),
+        ),
+    );
+}
+
+/**
+ * Implementacija hook_menu().
+ */
+function prijava_ispita_menu() {
+    $items = array();
+    $items['prijava_ispita'] = array(
+        'title' => 'Prijava Ispita',
+        'page callback' => 'drupal_get_form',
+        'access arguments' => array('submit prijava_ispita'),
+        'page arguments' => array('prijava_ispita_form'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['forme_prijave'] = array(
+        'title' => 'Forme prijave',
+        'page callback' => 'prijava_ispita_submissions',
+        'access arguments' => array('access prijava_ispita_submissions'),
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    return $items;
+}
+
+/**
+ * Forma
+ */
+
+function prijava_ispita_form($form, &$form_state){
+    $options = array();
+    $options["0"] = "Odbijena";
+    $options["1"] = "Prihvacena";
+
+
+    $form['broj_indeksa'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Broj Indeksa'),
+        '#size' => 7,
+        '#maxlength' => 7,
+        '#required' => TRUE,
+        '#description' => t('Unesite validan broj indeksa')
+    );
+    $form['naziv_predmeta'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Naziv predmeta'),
+        '#size' => 50,
+        '#maxlength' => 50,
+        '#required' => TRUE,
+        '#description' => t('Unesite naziv predmeta')
+    );
+    /*$form['datum_prijave'] = array(
+        '#type' => 'datetime',
+        '#title' => t('Datum prijave'),
+        '#required' => TRUE,
+        '#description' => t('Unesite datum prijave')
+    );*/
+    $form['status'] = array(
+        '#type' => 'checkboxes',
+        '#title' => t('Status prijave'),
+        '#options' => $options,
+        '#required' => TRUE,
+        '#description' => t('Status prijave predmeta')
+    );
+
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Prijavi'),
+    );
+
+    return $form;
+}
+
+/**
+ * Validacija broja indeksa
+ */
+function prijava_ispita_form_validate($form, &$form_state){
+
+    //print('<pre>'.print_r($form_state['values'],1).'</pre>');die();
+
+    if(!is_numeric($form_state['values']['broj_indeksa'])){
+        form_set_error('broj_indeksa', t('Morate uneti broj'));
+        return FALSE;
+    }
+    return TRUE;
+}
+/**
+ * Submit handler za ubacivanje podataka u bazu
+ */
+
+function prijava_ispita_form_submit($form, &$form_state){
+    $pi_id = db_insert('prijava_ispita')
+        ->fields(array(
+            'broj_indeksa' => $form_state['values']['broj_indeksa'],
+            'naziv_predmeta' => $form_state['values']['naziv_predmeta'],
+            /*'datum_prijave' => serialize($form_state['values']['datum_prijave']),*/
+            'status' => serialize($form_state['values']['status']),
+        ))
+        ->execute();
+
+    drupal_set_message(t('Vasa prijava je registrovana.'));
+}
+
+/**
+ * Pregled prijava
+ */
+
+function prijava_ispita_submissions(){
+    //$results = db_query("SELECT * FROM {prijava_ispita}");
+
+    $query = db_select('prijava_ispita', 'pi');
+    $query
+        ->fields('pi', array('pi_id', 'broj_indeksa', 'naziv_predmeta'))
+        ->range(0,50)
+        ->orderBy('pi.pi_id');
+    $results = $query->execute();
+
+    $header = array(t('ID'),t('Broj Indeksa'),t('Naziv Predmeta'),t('Status Prijave'));
+    $rows = array();
+
+    foreach($results AS $result){
+        $rows[] = array(
+            check_plain($result->pi_id),
+            check_plain($result->broj_indeksa),
+            check_plain($result->naziv_predmeta),
+            check_plain($result->status),
+        );
+    }
+    return theme('table', array('header' => $header, 'rows' => $rows));
+}

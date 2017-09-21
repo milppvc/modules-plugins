@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/../../../../includes" />
+      <path value="$PROJECT_DIR$/../../../../modules" />
+      <path value="$PROJECT_DIR$/../flag" />
+      <path value="$PROJECT_DIR$/../imce" />
+      <path value="$PROJECT_DIR$/../devel" />
+      <path value="$PROJECT_DIR$/../token" />
+      <path value="$PROJECT_DIR$/../views" />
+      <path value="$PROJECT_DIR$/../ctools" />
+      <path value="$PROJECT_DIR$/../insert" />
+      <path value="$PROJECT_DIR$/../schema" />
+      <path value="$PROJECT_DIR$/../context" />
+      <path value="$PROJECT_DIR$/../webform" />
+      <path value="$PROJECT_DIR$/../wysiwyg" />
+      <path value="$PROJECT_DIR$/../features" />
+      <path value="$PROJECT_DIR$/../pathauto" />
+      <path value="$PROJECT_DIR$/../imce_wysiwyg" />
+      <path value="$PROJECT_DIR$/../jquery_update" />
+    </include_path>
+  </component>
+</project>

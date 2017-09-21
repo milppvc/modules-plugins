@@ -1,0 +1,53 @@
+<?php
+
+/**
+*Implementacija hook_schema za pravljenje tabele u bazi
+*/
+function prijava_ispita_schema() {
+  $schema = array();
+
+  $schema['prijava_ispita'] = array(
+    'description' => 'Tabela za razmenu poruka izmedju proizvoljnih grupa korisnika',
+    'fields' => array(
+      'pi_id' => array(
+        'description' => 'Primarni ID',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'broj_indeksa' => array(
+        'description' => 'Polje za cuvanje broja indeksa studenta',
+        'type' => 'int',
+        'length' => 10,
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'naziv_predmeta' => array(
+        'description' => 'Polje za cuvanje naziva predmeta',
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      /*'datum_prijave' => array(
+        'description' => t('Datum prijave'),
+        'type' => 'datetime',
+        'mysql_type' => 'datetime',
+        'not null' => FALSE,
+      ),*/
+      'status' => array(
+        'description' => '0 = nije odobrena prijava; 1 = odobrena prijava',
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'prijava_ispita_broj_indeksa' => array('broj_indeksa'),
+    ),
+      'primary key' => array('pi_id'),
+  );
+  return $schema;
+}
