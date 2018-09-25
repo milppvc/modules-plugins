@@ -1,0 +1,137 @@
+<?php
+
+function studentski_schema() {
+  $schema['studentski'] = array(
+    'fields' => array(
+      'id'=>array(
+        'type'=>'serial',
+        'not null' => TRUE,
+      ),
+      'imeiprezime'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'indeks'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'program'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'modul'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'rok'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'ispit'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+  $schema['ispit'] = array(
+    'fields' => array(
+      'id'=>array(
+        'type'=>'serial',
+        'not null' => TRUE,
+      ),
+      'imeiprezime'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'indeks'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'ispit'=>array(
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ),
+      'predispitne'=>array(
+        'type' => 'varchar',
+        'length' => 2,
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+
+  return $schema;
+
+}
+
+//your data array
+$datastud = array('id' => 'student', 'label' => 'Student');
+//creating your role
+$rolestud = \Drupal\user\Entity\Role::create($datastud);
+//saving your role
+$rolestud->save();
+
+//your data array
+$dataprof = array('id' => 'profesor', 'label' => 'Profesor');
+//creating your role
+$roleprof = \Drupal\user\Entity\Role::create($dataprof);
+//saving your role
+$roleprof->save();
+
+//your data array
+$datasluz = array('id' => 'sluzba', 'label' => 'Sluzba');
+//creating your role
+$rolesluz = \Drupal\user\Entity\Role::create($datasluz);
+$rolesluz->grantPermission('administer nodes');
+//saving your role
+$rolesluz->save();
+
+
+$language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+$user = \Drupal\user\Entity\User::create();
+//Mandatory settings
+$user->setPassword('student');
+$user->enforceIsNew();
+$user->setEmail('student@mail.com');
+$user->setUsername('student');
+$user->addRole('student');
+//Optional settings
+$user->activate();
+//Save user
+$res = $user->save();
+
+$user = \Drupal\user\Entity\User::create();
+//Mandatory settings
+$user->setPassword('profesor');
+$user->enforceIsNew();
+$user->setEmail('profesor@mail.com');
+$user->setUsername('profesor');
+$user->addRole('profesor');
+//Optional settings
+$user->activate();
+//Save user
+$res = $user->save();
+
+$user = \Drupal\user\Entity\User::create();
+//Mandatory settings
+$user->setPassword('sluzba');
+$user->enforceIsNew();
+$user->setEmail('sluzba@mail.com');
+$user->setUsername('sluzba');
+$user->addRole('sluzba');
+//Optional settings
+$user->activate();
+//Save user
+$res = $user->save();
+

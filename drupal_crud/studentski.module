@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Sadrzi studentski.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ *  hook_help().
+ */
+function mstudentski_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Glavni helper za studentski modul.
+    case 'help.page.studentski':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This dispaly information what you enter your application.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+function studentski_theme() {
+  // Koristimo templejt za prevod blokova sadrzaja zato dodajemo ovaj sadrzaj u temiranje
+  return [
+    'studentski_description' => [
+      'template' => 'description',
+      'variables' => [],
+    ],
+  ];
+}

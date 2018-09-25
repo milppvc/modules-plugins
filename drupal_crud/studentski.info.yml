@@ -1,0 +1,5 @@
+name: studentski
+type: module
+description: Modul za prijavu ispita
+core: 8.x
+package: Custom

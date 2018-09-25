@@ -1,0 +1,7 @@
+studentski.meni:
+  title: 'Forma za prijavu'
+  description: 'Opis forme za prijavu'
+  parent: main
+  menu_name: main
+  route_name: studentski.studentski_form
+  weight: 1
